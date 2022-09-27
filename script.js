@@ -4,6 +4,9 @@ const   timerText = document.querySelector("#timer");
 const   wpmText = document.querySelector("#wpm");
 const   accText = document.querySelector("#acc");
 
+let nbtype = 0;
+let lengthPhrase;
+let charIndex = 0;
 let timerInterval;
 let inGame = false;
 
@@ -30,29 +33,35 @@ function    randomParagraph() {
     contentText.addEventListener("click", () => inputField.focus());
 }
 
-function    gameInit() {
+function    game(event) {
     const characters = contentText.querySelectorAll('span');
-    const typedChar = inputField.value.split('');
-
+    lengthPhrase = characters.length;
+    const typedChar = inputField.value.split('')[charIndex];
     if (!inGame) {
         inGame = true;
         timerInterval = setInterval(myTimer, 1000);
     }
-    typedChar.forEach((charac, index) => {
-        if (charac === characters[index].firstChild.nodeValue)
-        {
-            characters[index].classList.add("correct");
-            characters[index].classList.remove("fail");
+    if (event.inputType === "insertText") {
+        if (characters[charIndex].firstChild.nodeValue == typedChar) {
+            characters[charIndex].classList.remove("fail");
+            characters[charIndex].classList.add("correct");
             console.log("succes");
         }
-        else
-        {
-            characters[index].classList.add("fail");
-            characters[index].classList.remove("correct");
+        else {
             mistake++;
-            console.log("false");
+            characters[charIndex].classList.remove("correct");
+            characters[charIndex].classList.add("fail");
+            console.log("failure");
         }
-    });
+        nbtype++;
+        if (charIndex != lengthPhrase - 1)
+            charIndex++;
+        else
+            alert("youwin");
+    }
+    const nbCorrect = contentText.querySelectorAll('.correct').length;
+    wpmText.innerText = Math.round((nbCorrect / 5)) * (60 / maxTime);
+    accText.innerText = Math.round(100 - (mistake / nbtype * 100));
 }
 
 function    myTimer() {
@@ -60,11 +69,21 @@ function    myTimer() {
 
     if (timeLeft > 0) {
         timeLeft--;
-        timerText.innerHTML = timeLeft;
+        timerText.innerText = timeLeft;
     }
     else
         clearInterval(timerInterval);
 }
 
+
+
 randomParagraph();
-inputField.addEventListener('input', gameInit);
+inputField.addEventListener('input', game);
+inputField.addEventListener('keydown', (event) => {
+    if (charIndex > 0 && (event.key === "Backspace" || event.key === "Delete"))
+        charIndex--;
+    if (charIndex > 0 && event.key === "ArrowLeft")
+        charIndex--;
+    if (charIndex < lengthPhrase - 1 && event.key === "RightArrow")
+        charIndex++;
+});
