@@ -4,16 +4,14 @@ const   timerText = document.querySelector("#timer");
 const   wpmText = document.querySelector("#wpm");
 const   accText = document.querySelector("#acc");
 
-let nbtype = 0;
+let nbtype;
 let lengthPhrase;
-let charIndex = 0;
+let charIndex;
 let timerInterval;
-let inGame = false;
-
-let maxTime = 30;
-let timeLeft = maxTime;
-
-let mistake = 0;
+let inGame;
+let maxTime;
+let timeLeft;
+let mistake;
 
 const paragraph = [
     "trol loll ol",
@@ -21,6 +19,15 @@ const paragraph = [
     "je suis un fromage",
     "chocolat blanc"
 ];
+
+function    initarg() {
+    nbtype = 0;
+    charIndex = 0;
+    inGame = false;
+    maxTime = 30;
+    timeLeft = maxTime;
+    mistake = 0;
+}
 
 function    randomParagraph() {
     let randomSentence = Math.floor(Math.random() * paragraph.length);
@@ -56,8 +63,10 @@ function    game(event) {
         nbtype++;
         if (charIndex != lengthPhrase - 1)
             charIndex++;
-        else
+        else {
+            inGame = false;
             alert("youwin");
+        }
     }
     const nbCorrect = contentText.querySelectorAll('.correct').length;
     wpmText.innerText = Math.round((nbCorrect / 5)) * (60 / maxTime);
@@ -67,7 +76,7 @@ function    game(event) {
 function    myTimer() {
     var timer;
 
-    if (timeLeft > 0) {
+    if (timeLeft > 0 && inGame) {
         timeLeft--;
         timerText.innerText = timeLeft;
     }
@@ -76,7 +85,7 @@ function    myTimer() {
 }
 
 
-
+initarg();
 randomParagraph();
 inputField.addEventListener('input', game);
 inputField.addEventListener('keydown', (event) => {
