@@ -1,0 +1,32 @@
+/* MAIN */
+
+body
+{
+    font-family: 'Courier New', Courier, monospace;
+    background-color:#364f6b;
+    color: #ffffff;
+}
+
+
+span
+{
+    font-weight: 700;
+    color: #3fc1c9;
+}
+
+#invisible-text
+{
+    z-index: -999;
+    opacity: 0;
+    position: absolute;
+}
+
+.correct
+{
+    color: green;
+}
+
+.fail
+{
+    color: red;
+}
