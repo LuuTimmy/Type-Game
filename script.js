@@ -6,6 +6,8 @@ const accText = document.querySelector("#acc");
 const tryAgainButton = document.querySelector("#try-again");
 const newTextButton = document.querySelector("#new-text");
 
+const random_phrase = "http://api.quotable.io/random?minLength=200&maxLength=500";
+
 let nbtype;
 let lengthPhrase;
 let charIndex;
@@ -15,12 +17,32 @@ let maxTime;
 let timeLeft;
 let mistake;
 
+function getRandomQuote() {
+  return fetch(random_phrase)
+    .then((response) => response.json())
+    .then((data) => data.content);
+}
+
 const paragraph = [
   "trol loll ol",
   "je suis un chololat",
   "je suis un fromage",
   "chocolat blanc",
 ];
+
+async function getNextQuote() {
+  const quote = await getRandomQuote();
+  quote.split("").forEach((span) => {
+    const characterSpan = document.createElement("span");
+    characterSpan.innerText = span;
+    contentText.appendChild(characterSpan);
+  });
+  document.addEventListener("keydown", () => inputField.focus());
+  contentText.addEventListener("click", () => inputField.focus());
+  console.log(quote);
+}
+
+getNextQuote();
 
 function initarg() {
   nbtype = 0;
@@ -43,7 +65,7 @@ function randomParagraph() {
     contentText.appendChild(characterSpan);
   });
   document.addEventListener("keydown", () => inputField.focus());
-//   contentText.addEventListener("click", () => inputField.focus());
+  contentText.addEventListener("click", () => inputField.focus());
 }
 
 function game(event) {
@@ -81,37 +103,34 @@ function myTimer() {
   if (timeLeft > 0 && inGame) {
     timeLeft--;
     timerText.innerText = timeLeft;
-  } 
-  else 
-    clearInterval(timerInterval);
+  } else clearInterval(timerInterval);
 }
 
 function resetGame() {
-    contentText.querySelectorAll("span").forEach((arg) => {
-        arg.className = '';
-    });
-    clearInterval(timerInterval);
-    initarg();
+  contentText.querySelectorAll("span").forEach((arg) => {
+    arg.className = "";
+  });
+  clearInterval(timerInterval);
+  initarg();
 }
 
 function newText() {
-    resetGame();
-    contentText.innerHTML = '';
-    randomParagraph();
+  resetGame();
+  contentText.innerHTML = "";
+  //randomParagraph();
+  getNextQuote();
 }
 
 initarg();
-randomParagraph();
+//randomParagraph();
 inputField.addEventListener("input", game);
 tryAgainButton.addEventListener("click", resetGame);
 newTextButton.addEventListener("click", newText);
 inputField.addEventListener("keydown", (event) => {
   if (charIndex > 0 && (event.key === "Backspace" || event.key === "Delete")) {
     charIndex--;
-    contentText.querySelectorAll("span")[charIndex].className = '';
+    contentText.querySelectorAll("span")[charIndex].className = "";
   }
-  if (charIndex > 0 && event.key === "ArrowLeft") 
-    charIndex--;
-  if (charIndex < lengthPhrase - 1 && event.key === "RightArrow") 
-    charIndex++;
+  if (charIndex > 0 && event.key === "ArrowLeft") charIndex--;
+  if (charIndex < lengthPhrase - 1 && event.key === "RightArrow") charIndex++;
 });
