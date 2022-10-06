@@ -14,7 +14,7 @@ let frameX = 0;
 let frameY = 0;
 let gameFrame = 0;
 let nbFrameAnimation = 5;
-const staggerFrames = 4;
+const staggerFrames = 5;
 
 function animate()
 {
@@ -78,10 +78,12 @@ document.addEventListener("click", demonDeathAnimation);
 
 class CreateState
 {
-    constructor(name, staggerFrames, frames, isLoop) {
+    constructor(name, staggerFrames, frames, xPos, yPos, isLoop) {
         this.name = name;
         this.staggerFrames = staggerFrames;
         this.frames = frames;
+        this.posX = xPos;
+        this.posY = ypos;
         this.isLoop = isLoop;
     }
 }
@@ -96,10 +98,8 @@ class DemonHero
         this.frameX = 0;
         this.frameY = 0;
         this.staggerFrames = 5;
-        this.demonIdle = new CreateState("Idle", 5, 5, true);
-        this.demonAttack = new CreateState("Attack", 5, 14, false);
-        this.demonDeath = new CreateState("Death", 5, 22, false);
+        this.demonIdle = new CreateState("Idle", 5, 5, 0, 0, true);
+        this.demonAttack = new CreateState("Attack", 5, 14, 0, 2, false);
+        this.demonDeath = new CreateState("Death", 5, 22, 0, 4, false);
     }
-
-    
 }
