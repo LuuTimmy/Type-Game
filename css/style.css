@@ -2,6 +2,8 @@
 
 body
 {
+    margin: 0;
+    padding: 0;
     font-family: 'Courier New', Courier, monospace;
     background-color:#364f6b;
     color: #ffffff;

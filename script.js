@@ -17,16 +17,8 @@ let maxTime;
 let timeLeft;
 let mistake;
 
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': 'e094cca14amsh94fe50f8bed3647p1fab90jsn17edbeb6e063',
-		'X-RapidAPI-Host': 'random-words5.p.rapidapi.com'
-	}
-};
-
 function getRandomQuote() {
-	return fetch('https://random-words5.p.rapidapi.com/getMultipleRandom?count=20&maxLength=10', options)
+	return fetch('https://random-word-api.herokuapp.com/word?number=50')
 		.then(response => response.json())
 		.then(response => response)
 		.catch(err => console.error(err));
@@ -85,6 +77,8 @@ function game(event) {
 		}
 	}
 	const nbCorrect = contentText.querySelectorAll(".correct").length;
+	if (nbCorrect % 15 == 0)
+		demonAttackAnmation();
 	wpmText.innerText = Math.round((nbCorrect / 5) * (60 / maxTime));
 	accText.innerText = Math.round(100 - (mistake / nbtype) * 100);
 }
@@ -95,7 +89,10 @@ function myTimer() {
 	if (timeLeft > 0 && inGame) {
 		timeLeft--;
 		timerText.innerText = timeLeft;
-	} else clearInterval(timerInterval);
+	} else {
+		demonDeathAnimation();
+		clearInterval(timerInterval);
+	} 
 }
 
 function resetGame() {
