@@ -9,6 +9,18 @@ body
     color: #ffffff;
 }
 
+#game-menu {
+    margin-top: 5%;
+}
+
+#game .player1{
+    background: orange;
+}
+
+#game .player2{
+    background: blue;
+}
+
 
 span
 {
@@ -33,7 +45,7 @@ span
     color: red;
 }
 
-canvas {
+.player1{
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
 }
